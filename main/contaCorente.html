@@ -1,0 +1,163 @@
+<script>
+    var numero, saldoInicial, tipo, limite;
+
+    function inicio() {
+        let menu = `
+Escolha uma opção:
+
+    [1] Abertura de conta corrente.
+    [2] Saque.
+    [3] Deposito.
+    [4] Imprimir extrato
+    [5] Sair.
+    `
+        opcao = parseInt(prompt(menu))
+        operacionar(opcao)
+    };
+    // Função invocada dentro de imprimirSaldo() para voltar as opções de operação.
+
+    function operacionar(opcao) {
+        switch (opcao) {
+            case 1:
+                if (numero === undefined) {
+                    abrirConta()
+                } else {
+                    alert("Conta já esta aberta escolha outra ação")
+                    inicio()
+                }
+
+                break
+
+            case 2:
+                if (numero === undefined) {
+                    alert(" Voce não possui conta ainda,redirecioando para abertura de conta...")
+                    abrirConta()
+                }
+                else {
+                    let saque = parseInt(prompt(`Insira um valor para fazer o saque`))
+                    sacar(saque)
+                }
+
+                break
+
+            case 3:
+                if (numero === undefined) {
+                    alert(" Voce não possui conta ainda,redirecioando para abertura de conta...")
+                    abrirConta()
+                }
+                else {
+                    let deposito = parseInt(prompt(`Insira um valor para fazer o deposito`))
+                    depositar(deposito)
+                }
+
+                break
+
+                case 4:
+                if (numero === undefined) {
+                    alert(" Voce não possui conta ainda,redirecioando para abertura de conta...")
+                    abrirConta()}
+                else{imprimirSaldo("Consulta de saldo atual",saldoInicial)}
+
+            case 5:
+                alert("Obrigado até a proxima ")
+                return
+                break
+            default:
+                alert(`Opção invalida por favor insira um numero validoo`)
+                inicio()
+                break
+        }
+    };
+    // Permite escolher as operações da conta.
+
+    function abrirConta() {
+        numero = prompt("Insira o numero da conta")
+        saldoInicial = parseFloat(prompt("Insira o saldo inicial"))
+        tipo = parseInt(prompt(`Informe o tipo de conta:
+    0 -> Conta Comum
+    1 -> Conta Especial   
+    `))
+
+        if (tipo === 0) {
+            imprimirSaldo("Conta comum aberta com sucesso", saldoInicial)
+
+        }
+        else if (tipo === 1) {
+
+            limite = parseFloat(prompt("Abrindo conta especia.... Qual será o limite de crédito?"))
+            if (isNaN(limite)){
+                alert("Insira um numero valido")
+                abrirConta()
+            }
+            imprimirSaldo("Conta especial criada com sucesso", saldoInicial)
+
+        }
+        else {
+            alert(`Opção inválida . Insira 0 ou 1. 
+        Reiniciando processo de abertura de conta`)
+            abrirConta()
+        }
+        return
+    };
+    // Inicializa a conta.
+
+    function sacar(valor) {
+        let resultado = saldoInicial-valor
+        if ((resultado) < 0 && tipo === 0) {
+            alert("Saldo insuficiente retornando ao menu ")
+            inicio()
+        } else if (resultado < 0 && tipo === 1) {
+            if ((resultado*-1) > limite) {
+                alert("Voce estourou seu limite de crédito, retornando ao menu")
+                inicio()
+            }else{
+                alert("Atenção você entrou no seu limite de credito")
+                saldoInicial = resultado
+                alert(`Saque sendo realizado no valor de: R$ ${valor.toFixed(2)}`)
+                imprimirSaldo("Saque realizado!", saldoInicial)}
+            }
+                
+        else{
+        saldoInicial = resultado
+        alert(`Saque sendo realizado no valor de: R$ ${valor.toFixed(2)}`)
+        imprimirSaldo("Saque realizado!", saldoInicial)}
+
+        return
+    };
+    // Retira do ccsaldo da conta observando se há fundos suficientes.
+
+    function depositar(valor) {
+        
+        saldoInicial +=valor
+        alert(`Deposito sendo realizado no valor de: R$ ${valor.toFixed(2)}`)
+        imprimirSaldo("Deposito realizado",saldoInicial)
+        return
+    };
+    // Adiciona valor ao saldo atual da conta.
+
+    function imprimirSaldo(mensagem, valor) {
+        if (tipo === 0) {
+            alert(`Conta: ${numero};
+     ${mensagem} 
+    Seu saldo atual é : R$ ${valor.toFixed(2)} `)
+        }
+        else {
+            alert(`Conta:${numero};
+        ${mensagem}
+        Seu saldo atual é : R$ ${valor.toFixed(2)}.
+        Seu limite de crédito é : R$ ${limite.toFixed(2)}.
+        `)
+
+
+        }
+
+        inicio()
+
+    };
+    // Mostra, na tela, o saldo e o limite disponível.
+
+
+    inicio();
+
+
+</script>
